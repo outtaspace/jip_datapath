@@ -9,8 +9,6 @@ use English qw(-no_match_vars);
 
 plan tests => 7;
 
-use lib::abs qw(../lib); # FIXME
-
 subtest 'Require some module' => sub {
     plan tests => 2;
 
