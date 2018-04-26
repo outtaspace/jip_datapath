@@ -7,7 +7,7 @@ use warnings FATAL => 'all';
 use Test::More;
 use English qw(-no_match_vars);
 
-plan tests => 7;
+plan tests => 8;
 
 subtest 'Require some module' => sub {
     plan tests => 2;
@@ -217,5 +217,76 @@ subtest 'path' => sub {
     isa_ok $o, 'JIP::DataPath';
 
     is $o->document, 42;
+};
+
+subtest '_accessor' => sub {
+    plan tests => 19;
+
+    my $document = {
+        foo => {
+            wtf => 42,
+        },
+        bar => [
+            [11, 22],
+        ],
+    };
+
+    my $o = JIP::DataPath->new(document => $document);
+
+    {
+        my ($contains, $context) = $o->_accessor([]);
+        is $contains,       1;
+        is_deeply $context, $document;
+    }
+    {
+        my ($contains, $context) = $o->_accessor([qw(foo)]);
+        is $contains,       1;
+        is_deeply $context, $document;
+    }
+    {
+        my ($contains, $context) = $o->_accessor([qw(foo wtf)]);
+        is $contains,       1;
+        is_deeply $context, $document->{'foo'};
+    }
+
+    {
+        my ($contains, $context) = $o->_accessor([qw(bar)]);
+        is $contains,       1;
+        is_deeply $context, $document;
+    }
+    {
+        my ($contains, $context) = $o->_accessor([qw(bar 0)]);
+        is $contains,       1;
+        is_deeply $context, $document->{'bar'};
+    }
+    {
+        my ($contains, $context) = $o->_accessor([qw(bar 0 0)]);
+        is $contains,       1;
+        is_deeply $context, $document->{'bar'}->[0];
+    }
+    {
+        my ($contains, $context) = $o->_accessor([qw(bar 0 1)]);
+        is $contains,       1;
+        is_deeply $context, $document->{'bar'}->[0];
+    }
+    {
+        my ($contains, $context) = $o->_accessor([qw(1 wtf 1 wtf)]);
+        is $contains, 0;
+        is $context,  undef;
+    }
+    {
+        my ($contains, $context) = $o->_accessor([qw(wtf 1 wtf 1)]);
+        is $contains, 0;
+        is $context,  undef;
+    }
+
+    is_deeply $o->document, {
+        foo => {
+            wtf => 42,
+        },
+        bar => [
+            [11, 22],
+        ],
+    };
 };
 
