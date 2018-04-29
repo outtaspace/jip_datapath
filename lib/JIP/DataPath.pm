@@ -89,6 +89,12 @@ sub set {
     return 0;
 }
 
+sub perform {
+    my ($self, $method, $path_parts, @xargs) = @ARG;
+
+    return $self->$method($path_parts, @xargs);
+}
+
 sub _accessor {
     my ($self, $path_parts) = @ARG;
 
@@ -138,8 +144,9 @@ This document describes L<JIP::DataPath> version C<0.01>.
 
     path({foo => 42})->contains(['foo']); # True
 
-    if (path({foo => 42})->set(['foo'], 100500)) {
-        path({foo => 42})->get(['foo']); # 100500
+    my $document = {foo => 42};
+    if (path($document)->set(['foo'], 100500)) {
+        path($document)->perform('get', ['foo']); # 100500
     }
 
 =head1 ATTRIBUTES
@@ -205,6 +212,15 @@ Sets the value at the specified path.
 
 Check if L</"document"> contains a value that can be identified with the given path.
 
+=head2 perform
+
+    # 42
+    JIP::DataPath->new(document => 42)->perform('get', []);
+
+    # True
+    JIP::DataPath->new(document => 42)->perform('set', [], 100500);
+    JIP::DataPath->new(document => 42)->perform('contains', []);
+
 =head1 EXPORTABLE FUNCTIONS
 
 These functions are exported only by request.
@@ -216,6 +232,7 @@ These functions are exported only by request.
     JIP::DataPath::path({foo => 42})->get(['foo']);
     JIP::DataPath::path({foo => 42})->set(['foo'], 100500);
     JIP::DataPath::path({foo => 42})->contains(['foo']);
+    JIP::DataPath::path({foo => 42})->perform('contains', ['foo']);
 
 or exported on demand via
 
@@ -224,6 +241,7 @@ or exported on demand via
     path({foo => 42})->get(['foo']);
     path({foo => 42})->set(['foo'], 100500);
     path({foo => 42})->contains(['foo']);
+    path({foo => 42})->perform('contains', ['foo']);
 
 Alias of C<< JIP::DataPath->new(document => {}) >>. It creates a L<JIP::DataPath> object.
 

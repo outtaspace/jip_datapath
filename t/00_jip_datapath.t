@@ -7,7 +7,7 @@ use warnings FATAL => 'all';
 use Test::More;
 use English qw(-no_match_vars);
 
-plan tests => 8;
+plan tests => 9;
 
 subtest 'Require some module' => sub {
     plan tests => 2;
@@ -39,7 +39,7 @@ subtest 'new()' => sub {
 
     isa_ok $o, 'JIP::DataPath';
 
-    can_ok $o, qw(new get contains set path);
+    can_ok $o, qw(new get contains set perform path);
 
     is $o->document, 42;
 };
@@ -209,7 +209,48 @@ subtest 'set()' => sub {
     };
 };
 
-subtest 'path' => sub {
+subtest 'perform()' => sub {
+    plan tests => 4;
+
+    my $o = JIP::DataPath->new(document => {
+        foo => {
+            bar => [
+                {wtf => 42},
+            ],
+        },
+    });
+
+    subtest 'perform get()' => sub {
+        plan tests => 1;
+
+        my $result = $o->perform('get', [qw(foo bar 0 wtf)]);
+        is $result, 42;
+    };
+
+    subtest 'perform set()' => sub {
+        plan tests => 1;
+
+        my $result = $o->perform('set', [qw(foo bar 0 wtf)], 100500);
+        is $result, 1;
+    };
+
+    subtest 'perform contains()' => sub {
+        plan tests => 1;
+
+        my $result = $o->perform('contains', [qw(foo bar 0 wtf)]);
+        is $result, 1;
+    };
+
+    is_deeply $o->document, {
+        foo => {
+            bar => [
+                {wtf => 100500},
+            ],
+        },
+    };
+};
+
+subtest 'path()' => sub {
     plan tests => 2;
 
     my $o = JIP::DataPath::path(42);
@@ -219,7 +260,7 @@ subtest 'path' => sub {
     is $o->document, 42;
 };
 
-subtest '_accessor' => sub {
+subtest '_accessor()' => sub {
     plan tests => 19;
 
     my $document = {
