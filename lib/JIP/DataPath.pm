@@ -155,7 +155,7 @@ L<JIP::DataPath> implements the following attributes.
 
 =head2 document
 
-    my $document = $pointer->document;
+    my $document = $data_path->document;
 
 Data structure to be processed.
 
