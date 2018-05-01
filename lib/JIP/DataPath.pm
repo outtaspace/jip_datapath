@@ -9,7 +9,7 @@ use JIP::ClassField;
 use Carp qw(croak);
 use English qw(-no_match_vars);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 our @EXPORT_OK = qw(path);
 
@@ -134,7 +134,7 @@ JIP::DataPath - provides a way to access data elements in a deep, complex and ne
 
 =head1 VERSION
 
-This document describes L<JIP::DataPath> version C<0.01>.
+This document describes L<JIP::DataPath> version C<0.02>.
 
 =head1 SYNOPSIS
 
