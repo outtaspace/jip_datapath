@@ -32,7 +32,7 @@ sub new {
 }
 
 sub get {
-    my ($self, $path_parts) = @ARG;
+    my ($self, $path_parts, $default_value) = @ARG;
 
     return $self->document
         if @{ $path_parts } == 0;
@@ -51,7 +51,7 @@ sub get {
         }
     }
 
-    return;
+    return $default_value;
 }
 
 sub contains {
@@ -184,6 +184,12 @@ Build new L<JIP::DataPath> object.
     # 'bar'
     JIP::DataPath->new(document => ['foo', 'bar'])->get([1]);
 
+    # undef
+    JIP::DataPath->new(document => ['foo', 'bar'])->get([2]);
+
+    # 'default value'
+    JIP::DataPath->new(document => ['foo', 'bar'])->get([2], 'default value');
+
 Extract value from L</"document"> identified by the given path.
 
 =head2 set
@@ -216,6 +222,12 @@ Check if L</"document"> contains a value that can be identified with the given p
 
     # 42
     JIP::DataPath->new(document => 42)->perform('get', []);
+
+    # undef
+    JIP::DataPath->new(document => 42)->perform('get', ['foo']);
+
+    # 42
+    JIP::DataPath->new(document => 42)->perform('get', ['foo'], 42);
 
     # True
     JIP::DataPath->new(document => 42)->perform('set', [], 100500);
