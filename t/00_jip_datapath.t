@@ -12,7 +12,7 @@ plan tests => 10;
 subtest 'Require some module' => sub {
     plan tests => 2;
 
-    use_ok 'JIP::DataPath', '0.03';
+    use_ok 'JIP::DataPath', '0.04';
     require_ok 'JIP::DataPath';
 
     diag(
