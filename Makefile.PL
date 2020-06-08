@@ -4,7 +4,7 @@ use warnings FATAL => 'all';
 
 use ExtUtils::MakeMaker;
 
-my %write_makefile_param = (
+my %makefile_param = (
     NAME             => 'JIP::DataPath',
     AUTHOR           => q{Vladimir Zhavoronkov <flyweight@yandex.ru>},
     VERSION_FROM     => 'lib/JIP/DataPath.pm',
@@ -41,20 +41,20 @@ my %write_makefile_param = (
     clean => {FILES => 'JIP-DataPath-*'},
 );
 
-unless (eval { ExtUtils::MakeMaker->VERSION(6.63_03); }) {
-    $write_makefile_param{PREREQ_PM} = {
-        %{ delete $write_makefile_param{'TEST_REQUIRES'} },
-        %{ delete $write_makefile_param{'BUILD_REQUIRES'} },
+if (!eval { ExtUtils::MakeMaker->VERSION(6.63_03); }) {
+    $makefile_param{PREREQ_PM} = {
+        %{ delete $makefile_param{'TEST_REQUIRES'} },
+        %{ delete $makefile_param{'BUILD_REQUIRES'} },
     };
 }
 
-unless (eval { ExtUtils::MakeMaker->VERSION(6.52) }) {
-    delete $write_makefile_param{'CONFIGURE_REQUIRES'};
+if (!eval { ExtUtils::MakeMaker->VERSION(6.52) }) {
+    delete $makefile_param{'CONFIGURE_REQUIRES'};
 }
 
-unless (eval { ExtUtils::MakeMaker->VERSION(6.48) }) {
-    delete $write_makefile_param{'MIN_PERL_VERSION'};
+if (!eval { ExtUtils::MakeMaker->VERSION(6.48) }) {
+    delete $makefile_param{'MIN_PERL_VERSION'};
 }
 
-WriteMakefile(%write_makefile_param);
+WriteMakefile(%makefile_param);
 
