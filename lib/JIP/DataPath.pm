@@ -49,16 +49,16 @@ sub get {
 
     my ($contains, $context) = $self->_accessor($path_parts);
 
-    if ($contains) {
-        my $last_part = $path_parts->[-1] // q{};
-        my $type      = ref $context      // q{};
+    return $default_value if !$contains;
 
-        if ($type eq 'HASH' && length $last_part) {
-            return $context->{$last_part};
-        }
-        elsif ($type eq 'ARRAY' && $last_part =~ m{^\d+$}x) {
-            return $context->[$last_part];
-        }
+    my $last_part = $path_parts->[-1] // q{};
+    my $type      = ref $context      // q{};
+
+    if ($type eq 'HASH' && length $last_part) {
+        return $context->{$last_part};
+    }
+    elsif ($type eq 'ARRAY' && $last_part =~ m{^\d+$}x) {
+        return $context->[$last_part];
     }
 
     return $default_value;
@@ -73,16 +73,16 @@ sub get_new {
 
     my ($contains, $context) = $self->_accessor($path_parts);
 
-    if ($contains) {
-        my $last_part = $path_parts->[-1] // q{};
-        my $type      = ref $context      // q{};
+    return $default_value if !$contains;
 
-        if ($type eq 'HASH' && length $last_part) {
-            return __PACKAGE__->new(document => $context->{$last_part});
-        }
-        elsif ($type eq 'ARRAY' && $last_part =~ m{^\d+$}x) {
-            return __PACKAGE__->new(document => $context->[$last_part]);
-        }
+    my $last_part = $path_parts->[-1] // q{};
+    my $type      = ref $context      // q{};
+
+    if ($type eq 'HASH' && length $last_part) {
+        return __PACKAGE__->new(document => $context->{$last_part});
+    }
+    elsif ($type eq 'ARRAY' && $last_part =~ m{^\d+$}x) {
+        return __PACKAGE__->new(document => $context->[$last_part]);
     }
 
     return $default_value;
@@ -106,18 +106,18 @@ sub set {
 
     my ($contains, $context) = $self->_accessor($path_parts);
 
-    if ($contains) {
-        my $last_part = $path_parts->[-1] // q{};
-        my $type      = ref $context      // q{};
+    return 0 if !$contains;
 
-        if ($type eq 'HASH' && length $last_part) {
-            $context->{$last_part} = $value;
-            return 1;
-        }
-        elsif ($type eq 'ARRAY' && $last_part =~ m{^\d+$}x) {
-            $context->[$last_part] = $value;
-            return 1;
-        }
+    my $last_part = $path_parts->[-1] // q{};
+    my $type      = ref $context      // q{};
+
+    if ($type eq 'HASH' && length $last_part) {
+        $context->{$last_part} = $value;
+        return 1;
+    }
+    elsif ($type eq 'ARRAY' && $last_part =~ m{^\d+$}x) {
+        $context->[$last_part] = $value;
+        return 1;
     }
 
     return 0;
