@@ -235,7 +235,7 @@ Extract value from L</"document"> identified by the given path.
 
 =head2 get_new
 
-    my $o = JIP::DataPath->new(
+    my $data_path = JIP::DataPath->new(
         document => {
             foo => {
                 bar => {
@@ -246,13 +246,13 @@ Extract value from L</"document"> identified by the given path.
     );
 
     # undef
-    $o->get_new(['not exists']);
+    $data_path->get_new(['not exists']);
 
     # {wtf => 42}
-    $o->get_new(['foo bar'])->document;
+    $data_path->get_new(['foo bar'])->document;
 
     # 'default value'
-    $o->get_new(['not exists'], 'default value');
+    $data_path->get_new(['not exists'], 'default value');
 
 Extract value from L</"document">, identified by the given path, and create an instance of the L<JIP::DataPath> with this value.
 
@@ -325,13 +325,17 @@ Alias of C<< JIP::DataPath->new(document => {}) >>. It creates a L<JIP::DataPath
 
 None.
 
+=head1 DEPENDENCIES
+
+Perl 5.10.1 or later.
+
 =head1 CONFIGURATION AND ENVIRONMENT
 
 L<JIP::DataPath> requires no configuration files or environment variables.
 
 =head1 SEE ALSO
 
-L<Data::Focus>, L<Data::PathSimple>, L<Data::SimplePath>
+L<Data::Focus>, L<Data::PathSimple>, L<Data::SimplePath>, L<JSON::Pointer>
 
 =head1 AUTHOR
 
