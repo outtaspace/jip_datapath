@@ -29,13 +29,13 @@ my %makefile_param = (
     },
     BUILD_REQUIRES => {},
     TEST_REQUIRES => {
-        'English'    => 0,
+        English      => 0,
         'Test::More' => 0,
     },
     PREREQ_PM => {
-        'Exporter' => 0,
-        'English'  => 0,
-        'Carp'     => 0,
+        Exporter => 5.57,
+        English  => 0,
+        Carp     => 0,
     },
     dist  => {COMPRESS => 'gzip -9f', SUFFIX => 'gz'},
     clean => {FILES => 'JIP-DataPath-*'},

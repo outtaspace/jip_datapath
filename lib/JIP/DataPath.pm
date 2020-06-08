@@ -1,11 +1,10 @@
 package JIP::DataPath;
 
-use parent 'Exporter';
-
 use strict;
 use warnings;
 
 use Carp qw(croak);
+use Exporter qw(import);
 use English qw(-no_match_vars);
 
 our $VERSION = '0.041';
