@@ -7,7 +7,7 @@ use Carp qw(croak);
 use Exporter qw(import);
 use English qw(-no_match_vars);
 
-our $VERSION = '0.041';
+our $VERSION = '0.042';
 
 our @EXPORT_OK = qw(path);
 
@@ -175,7 +175,7 @@ JIP::DataPath - provides a way to access data elements in a deep, complex and ne
 
 =head1 VERSION
 
-This document describes L<JIP::DataPath> version C<0.041>.
+This document describes L<JIP::DataPath> version C<0.042>.
 
 =head1 SYNOPSIS
 
